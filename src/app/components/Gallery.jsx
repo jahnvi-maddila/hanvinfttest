@@ -1,18 +1,22 @@
 // src/app/components/Gallery.js
-import { SimpleGrid, Box, Image } from '@chakra-ui/react';
+import { SimpleGrid } from "@chakra-ui/react";
+import NFTCard from "./NFTCard"; // Import the new component
 
 const images = [
-  '/path-to-your-image1.jpg', // replace these with actual paths to your images
-  '/path-to-your-image2.jpg',
-  // ... more images
+  { src: "/temp_nft.png", owner: "Alice" },
+  { src: "/temp_nft.png", owner: "Bob" },
+  { src: "/temp_nft.png", owner: "Charlie" },
 ];
 
 const Gallery = () => (
-  <SimpleGrid columns={3} spacing={4}>
-    {images.map((src, index) => (
-      <Box key={index} boxShadow='lg' borderRadius='md'>
-        <Image src={src} alt={`Gallery image ${index + 1}`} width={300} height={200} objectFit='cover' />
-      </Box>
+  <SimpleGrid columns={3} spacing={4} p={20}>
+    {images.map((image, index) => (
+      <NFTCard
+        key={index}
+        src={image.src}
+        index={index + 1}
+        owner={image.owner}
+      />
     ))}
   </SimpleGrid>
 );

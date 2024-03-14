@@ -59,7 +59,7 @@ const Minter = ({ isOpen, onOpen, onClose }) => {
                 isDisabled={!file}
                 onClick={handleMint}
               >
-                Mint NFT
+                Begin Mint
               </Button>
             </VStack>
           </ModalBody>
