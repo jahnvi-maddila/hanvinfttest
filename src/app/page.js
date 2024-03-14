@@ -1,6 +1,6 @@
 // src/app/page.js
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   ChakraProvider,
   Box,
@@ -15,27 +15,24 @@ import {
 import Gallery from "./components/Gallery";
 import Minter from "./components/Minter";
 import { ethers } from "ethers";
+import AddNetwork from "./components/AddNetwork";
 
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const tutorialUrl = "https://www.notion.so/YourTutorialLink"; // Replace with your actual tutorial link
+  const [showAddNetworkModal, setShowAddNetworkModal] = useState(false);
 
-  const checkMetaMaskAndOpenMinter = async () => {
-    // Check if MetaMask is installed
+  const checkMetaMaskAndNetwork = async () => {
     if (window.ethereum && window.ethereum.isMetaMask) {
-      // MetaMask is installed, now request access to the user's wallet
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        onOpen(); // MetaMask is connected, open the Minter
-      } catch (error) {
-        // Handle error, such as user denying access to their wallet
-        console.error("Access to MetaMask account denied:", error);
+      const chainId = await window.ethereum.request({ method: "eth_chainId" });
+      if (chainId === "0x13882") {
+        // This is the hexadecimal chain ID for Polygon Amoy
+        onOpen(); // MetaMask is connected and on the Amoy network
+      } else {
+        setShowAddNetworkModal(true); // Wrong network, show modal
       }
     } else {
-      // If MetaMask is not installed, prompt the user to install it
-      alert(
-        "Please install MetaMask to use the Minting feature. \nLink to install: https://metamask.io/download/"
-      );
+      setShowAddNetworkModal(true); // MetaMask not installed, show modal
     }
   };
 
@@ -47,12 +44,16 @@ export default function Home() {
         </Heading>
         <Button
           colorScheme="blue"
-          onClick={checkMetaMaskAndOpenMinter}
+          onClick={checkMetaMaskAndNetwork}
           marginBottom="8"
         >
           Mint NFT
         </Button>
       </Box>
+      <AddNetwork
+        isOpen={showAddNetworkModal}
+        onClose={() => setShowAddNetworkModal(false)}
+      />
       <Gallery />
       <Minter isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
 
