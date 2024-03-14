@@ -18,7 +18,7 @@ const NFTCard = ({ src, index, owner }) => {
         textAlign="center"
         borderTopWidth="1px"
       >
-        Owner: {owner}
+        owned by {owner}
       </Text>
     </Box>
   );

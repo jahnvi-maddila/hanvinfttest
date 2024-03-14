@@ -50,7 +50,8 @@ const Minter = ({ isOpen, onOpen, onClose }) => {
                   <Text>{file.name}</Text>
                 ) : (
                   <Text>
-                    Drag 'n' drop your file here, or click to select files
+                    Drag &apos;n&apos; drop your file here, or click to select
+                    files
                   </Text>
                 )}
               </Center>

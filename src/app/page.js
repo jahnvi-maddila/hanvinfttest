@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import Gallery from "./components/Gallery";
-import Minter from "./components/Minter"; // Import the Minter component
+import Minter from "./components/Minter";
 
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -21,7 +21,7 @@ export default function Home() {
           The KU Blockchain Community Gallery
         </Heading>
         {/* Button to trigger the modal */}
-        <Button colorScheme="teal" onClick={onOpen} marginBottom="8">
+        <Button colorScheme="blue" onClick={onOpen} marginBottom="8">
           Mint NFT
         </Button>
       </Box>
