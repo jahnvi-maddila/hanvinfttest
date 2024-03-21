@@ -14,6 +14,10 @@ import {
 const AddNetwork = ({ isOpen, onClose }) => {
   const addPolygonAmoyNetwork = async () => {
     try {
+      // First, request account access from MetaMask
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      // After account access, proceed to add the Amoy network
       await window.ethereum.request({
         method: "wallet_addEthereumChain",
         params: [

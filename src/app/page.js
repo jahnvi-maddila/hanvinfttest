@@ -14,12 +14,12 @@ import {
 } from "@chakra-ui/react";
 import Gallery from "./components/Gallery";
 import Minter from "./components/Minter";
-import { ethers } from "ethers";
 import AddNetwork from "./components/AddNetwork";
 
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const tutorialUrl = "https://www.notion.so/YourTutorialLink"; // Replace with your actual tutorial link
+  const tutorialUrl =
+    "https://kublockchain.notion.site/NFT-Gallery-dApp-tutorial-8ccbda66968b4b55b1808e8c2abe1272?pvs=4";
   const [showAddNetworkModal, setShowAddNetworkModal] = useState(false);
 
   const checkMetaMaskAndNetwork = async () => {

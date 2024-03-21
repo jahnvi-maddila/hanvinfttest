@@ -1,4 +1,3 @@
-// src/app/components/Minter.js
 import React from "react";
 import {
   Modal,
@@ -13,8 +12,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
+import { ethers } from "ethers";
+import contractABI from "../../abis/contractABI.json";
 
-const Minter = ({ isOpen, onOpen, onClose }) => {
+const Minter = ({ isOpen, onClose }) => {
   const [file, setFile] = React.useState(null);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -24,10 +25,68 @@ const Minter = ({ isOpen, onOpen, onClose }) => {
     },
   });
 
-  const handleMint = () => {
-    // Logic to handle minting the NFT
-    console.log("Minting the NFT with file:", file);
-    onClose(); // Close the modal after minting
+  const uploadToIPFS = async (file) => {
+    console.log(process.env.NEXT_PUBLIC_PINATA_JWT);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      // No need for fs as we're handling this in the browser environment
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`,
+          },
+          body: formData,
+        }
+      );
+
+      const resData = await res.json();
+
+      // Assuming the file URL is what you need for minting
+      return `https://gateway.pinata.cloud/ipfs/${resData.IpfsHash}`;
+    } catch (error) {
+      console.error("Error uploading file to IPFS:", error);
+      return null;
+    }
+  };
+
+  const handleMint = async () => {
+    if (!file) {
+      console.log("No file selected to mint!");
+      return;
+    }
+
+    const metadataURI = await uploadToIPFS(file);
+    if (!metadataURI) {
+      console.log("File upload to IPFS failed");
+      return;
+    }
+
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contractAddress = "0x429eff45294f352378db579c50bcf6b747d4ef10";
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+
+      try {
+        const mintTx = await contract.mintNFT(metadataURI);
+        await mintTx.wait();
+        console.log("NFT minted! Transaction: ", mintTx.hash);
+        onClose();
+      } catch (error) {
+        console.error("Minting failed: ", error);
+      }
+    } else {
+      console.log("MetaMask is not installed!");
+      return;
+    }
   };
 
   return (
