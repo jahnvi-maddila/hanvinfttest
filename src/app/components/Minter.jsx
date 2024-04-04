@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Modal,
@@ -14,9 +15,12 @@ import {
 import { useDropzone } from "react-dropzone";
 import { ethers } from "ethers";
 import contractABI from "../../abis/contractABI.json";
+import { useAmoy } from "../contexts/AmoyContext";
 
 const Minter = ({ isOpen, onClose }) => {
   const [file, setFile] = React.useState(null);
+  const { isMetaMaskInstalled, addPolygonAmoyNetwork, checkIsOnAmoyNetwork } =
+    useAmoy();
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/jpeg, image/png",
@@ -26,7 +30,6 @@ const Minter = ({ isOpen, onClose }) => {
   });
 
   const uploadToIPFS = async (file) => {
-    console.log(process.env.NEXT_PUBLIC_PINATA_JWT);
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -59,33 +62,38 @@ const Minter = ({ isOpen, onClose }) => {
       return;
     }
 
+    if (!isMetaMaskInstalled) {
+      console.log("MetaMask is not installed!");
+      return;
+    }
+
+    // Check if the user is on the Amoy network
+    if (!checkIsOnAmoyNetwork()) {
+      console.log("You're not connected to the Amoy network!");
+      // Prompt user to switch to the Amoy network
+      await addPolygonAmoyNetwork();
+      return; // Optionally, you could stop the function here or recheck the network
+    }
+
     const metadataURI = await uploadToIPFS(file);
     if (!metadataURI) {
       console.log("File upload to IPFS failed");
       return;
     }
 
-    if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const contractAddress = "0x429eff45294f352378db579c50bcf6b747d4ef10";
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
+    // Proceed with getting the provider and signer from ethers as you have MetaMask and are connected to Amoy
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contractAddress = "0x429eff45294f352378db579c50bcf6b747d4ef10";
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-      try {
-        const mintTx = await contract.mintNFT(metadataURI);
-        await mintTx.wait();
-        console.log("NFT minted! Transaction: ", mintTx.hash);
-        onClose();
-      } catch (error) {
-        console.error("Minting failed: ", error);
-      }
-    } else {
-      console.log("MetaMask is not installed!");
-      return;
+    try {
+      const mintTx = await contract.mintNFT(metadataURI);
+      await mintTx.wait();
+      console.log("NFT minted! Transaction: ", mintTx.hash);
+      onClose();
+    } catch (error) {
+      console.error("Minting failed: ", error);
     }
   };
 

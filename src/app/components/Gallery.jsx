@@ -1,4 +1,4 @@
-// src/app/components/Gallery.js
+"use client";
 import { SimpleGrid } from "@chakra-ui/react";
 import NFTCard from "./NFTCard"; // Import the new component
 

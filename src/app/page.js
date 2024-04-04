@@ -15,6 +15,7 @@ import {
 import Gallery from "./components/Gallery";
 import Minter from "./components/Minter";
 import AddNetwork from "./components/AddNetwork";
+import { AmoyProvider } from "./contexts/AmoyContext";
 
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,43 +39,45 @@ export default function Home() {
 
   return (
     <ChakraProvider>
-      <Box textAlign="center" marginTop="4">
-        <Heading as="h1" size="2xl" marginBottom="8">
-          The KU Blockchain Community Gallery
-        </Heading>
-        <Button
-          colorScheme="blue"
-          onClick={checkMetaMaskAndNetwork}
-          marginBottom="8"
-        >
-          Mint NFT
-        </Button>
-      </Box>
-      <AddNetwork
-        isOpen={showAddNetworkModal}
-        onClose={() => setShowAddNetworkModal(false)}
-      />
-      <Gallery />
-      <Minter isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
-
-      {/* Footer */}
-      <Flex
-        as="footer"
-        direction="column"
-        align="center"
-        justify="center"
-        marginTop="8"
-        padding="8"
-      >
-        <Text fontSize="md" marginBottom="2">
-          Made with 🔥 by the University of Kansas Blockchain Institute
-        </Text>
-        <Link href={tutorialUrl} isExternal>
-          <Button colorScheme="blue" variant="outline" size="sm">
-            View Tutorial
+      <AmoyProvider>
+        <Box textAlign="center" marginTop="4">
+          <Heading as="h1" size="2xl" marginBottom="8">
+            The KU Blockchain Community Gallery
+          </Heading>
+          <Button
+            colorScheme="blue"
+            onClick={checkMetaMaskAndNetwork}
+            marginBottom="8"
+          >
+            Mint NFT
           </Button>
-        </Link>
-      </Flex>
+        </Box>
+        {/* <AddNetwork
+          isOpen={showAddNetworkModal}
+          onClose={() => setShowAddNetworkModal(false)}
+        /> */}
+        <Gallery />
+        <Minter isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+
+        {/* Footer */}
+        <Flex
+          as="footer"
+          direction="column"
+          align="center"
+          justify="center"
+          marginTop="8"
+          padding="8"
+        >
+          <Text fontSize="md" marginBottom="2">
+            Made with 🔥 by the University of Kansas Blockchain Institute
+          </Text>
+          <Link href={tutorialUrl} isExternal>
+            <Button colorScheme="blue" variant="outline" size="sm">
+              View Tutorial
+            </Button>
+          </Link>
+        </Flex>
+      </AmoyProvider>
     </ChakraProvider>
   );
 }
