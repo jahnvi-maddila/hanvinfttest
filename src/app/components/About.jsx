@@ -29,8 +29,13 @@ const About = () => {
               This is a community gallery displaying NFTs minted by members of
               the KU Blockchain Community. To mint an NFT into the gallery,
               click the Mint NFT button. You can then drag and drop an image in,
-              add your name, and a label for the image. If you want to build
-              your own gallery, you can follow the tutorial at the link below.
+              add your name, and a label for the image. Feel free to add any
+              PG-rated image and label! <br /> <br />
+              To start, you can add a picture of you, your pet, or a fun place
+              you've traveled to.
+              <br /> <br />
+              If you want to build your own gallery, you can follow the tutorial
+              at the link below.
               {""}
             </p>
             <br />
