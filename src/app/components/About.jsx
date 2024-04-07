@@ -35,7 +35,7 @@ const About = () => {
             <br />
             <p>
               To start, you can add a picture of you, your pet, or a fun place
-              you've traveled to.
+              you&apos;ve traveled to.
             </p>
             <br />
             <p>
