@@ -82,10 +82,14 @@ const Minter = ({ isOpen, onClose }) => {
     }
 
     // Proceed with getting the provider and signer from ethers as you have MetaMask and are connected to Amoy
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
     const contractAddress = "0x429eff45294f352378db579c50bcf6b747d4ef10";
-    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    const contract = new ethers.Contract(
+      contractAddress,
+      contractABI.abi,
+      signer
+    );
 
     try {
       const mintTx = await contract.mintNFT(metadataURI);
