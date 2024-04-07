@@ -23,16 +23,19 @@ export default function Gallery() {
         contractABI.abi,
         provider
       );
-      const totalSupply = await contract.totalSupply(); // assuming a totalSupply function exists
+      console.log("Contract address: ", contractAddress);
+      console.log("Contract: ", contract);
+      const totalSupply = await contract.totalSupply();
+      console.log("Total supply: ", totalSupply);
 
       let nfts = [];
       for (let i = 1; i <= Number(totalSupply); i++) {
-        const tokenURI = await contract.tokenURI(i); // get token URI
-        const tokenName = await contract.getTokenName(i); // get token name
-        const tokenLabel = await contract.getTokenLabel(i); // get token label
+        const tokenURI = await contract.tokenURI(i);
+        const tokenName = await contract.getTokenName(i);
+        const tokenLabel = await contract.getTokenLabel(i);
 
         nfts.push({
-          src: tokenURI, // use the URI directly as the image source
+          src: tokenURI,
           owner: tokenName,
           label: tokenLabel,
         });
