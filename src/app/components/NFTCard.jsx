@@ -1,7 +1,7 @@
 // src/app/components/NFTCard.js
 import { Box, Image, Text } from "@chakra-ui/react";
 
-const NFTCard = ({ src, index, owner }) => {
+const NFTCard = ({ src, index, owner, label }) => {
   return (
     <Box boxShadow="lg" borderRadius="md" overflow="hidden" height="">
       <Image
@@ -18,7 +18,16 @@ const NFTCard = ({ src, index, owner }) => {
         textAlign="center"
         borderTopWidth="1px"
       >
-        owned by {owner}
+        minted by {owner}
+      </Text>
+      <Text
+        p={2}
+        color="gray.400"
+        fontSize="sm"
+        textAlign="center"
+        borderTopWidth="1px"
+      >
+        {label}
       </Text>
     </Box>
   );
