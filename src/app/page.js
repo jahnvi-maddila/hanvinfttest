@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import Gallery from "./components/Gallery";
 import Minter from "./components/Minter";
-import AddNetwork from "./components/AddNetwork";
 import { AmoyProvider } from "./contexts/AmoyContext";
 import About from "./components/About";
 

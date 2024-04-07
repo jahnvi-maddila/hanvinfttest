@@ -10,6 +10,7 @@ export function useAmoy() {
 export const AmoyProvider = ({ children }) => {
   const [isMetaMaskInstalled, setIsMetaMaskInstalled] = useState(false);
   const [currentChainId, setCurrentChainId] = useState(null);
+  const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined" && window.ethereum.isMetaMask) {
@@ -53,6 +54,9 @@ export const AmoyProvider = ({ children }) => {
       console.error("Failed to add the Polygon Amoy network:", error);
     }
   };
+  const toggleNetworkModal = () => {
+    setIsNetworkModalOpen(!isNetworkModalOpen);
+  };
 
   const checkIsOnAmoyNetwork = () => {
     return currentChainId === "0x13882";
@@ -65,6 +69,8 @@ export const AmoyProvider = ({ children }) => {
         currentChainId,
         addPolygonAmoyNetwork,
         checkIsOnAmoyNetwork,
+        isNetworkModalOpen,
+        toggleNetworkModal,
       }}
     >
       {children}
