@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -18,7 +18,8 @@ import contractABI from "../../abis/contractABI.json";
 import { useAmoy } from "../contexts/AmoyContext";
 
 const Minter = ({ isOpen, onClose }) => {
-  const [file, setFile] = React.useState(null);
+  const [file, setFile] = useState(null);
+  const [name, setName] = useState("");
   const { isMetaMaskInstalled, addPolygonAmoyNetwork, checkIsOnAmoyNetwork } =
     useAmoy();
 
@@ -84,7 +85,7 @@ const Minter = ({ isOpen, onClose }) => {
     // Proceed with getting the provider and signer from ethers as you have MetaMask and are connected to Amoy
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
-    const contractAddress = "0x429eff45294f352378db579c50bcf6b747d4ef10";
+    const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
     const contract = new ethers.Contract(
       contractAddress,
       contractABI.abi,
@@ -92,7 +93,9 @@ const Minter = ({ isOpen, onClose }) => {
     );
 
     try {
-      const mintTx = await contract.mintNFT(metadataURI);
+      const userAddress = await signer.getAddress();
+      const mintTx = await contract.mintNFT(userAddress, metadataURI, name);
+
       await mintTx.wait();
       console.log("NFT minted! Transaction: ", mintTx.hash);
       onClose();
@@ -126,9 +129,16 @@ const Minter = ({ isOpen, onClose }) => {
                   </Text>
                 )}
               </Center>
+              <input
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                style={{ padding: "10px", margin: "10px 0", width: "100%" }}
+              />
+
               <Button
                 colorScheme="blue"
-                isDisabled={!file}
+                isDisabled={!file || !name}
                 onClick={handleMint}
               >
                 Begin Mint
