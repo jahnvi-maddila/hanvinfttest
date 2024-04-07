@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SimpleGrid,
   Box,
@@ -8,7 +8,9 @@ import {
   Spinner,
   Flex,
   Link,
+  IconButton,
 } from "@chakra-ui/react";
+import { FiRefreshCw } from "react-icons/fi";
 import NFTCard from "./NFTCard";
 import { useAmoy } from "../contexts/AmoyContext";
 
@@ -22,20 +24,27 @@ export default function Gallery() {
     currentChainId,
     checkIsOnAmoyNetwork,
     toggleNetworkModal,
-    isNetworkModalOpen,
+    connectWallet,
+    walletConnected,
   } = useAmoy();
 
   const [NFTs, setNFTs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (isMetaMaskInstalled && checkIsOnAmoyNetwork()) {
+    if (walletConnected && checkIsOnAmoyNetwork()) {
       loadNFTs();
     } else if (isMetaMaskInstalled && !checkIsOnAmoyNetwork()) {
       toggleNetworkModal();
     }
     setIsLoading(false);
-  }, [isMetaMaskInstalled, currentChainId]);
+  }, [
+    walletConnected,
+    isMetaMaskInstalled,
+    currentChainId,
+    checkIsOnAmoyNetwork,
+    toggleNetworkModal,
+  ]);
 
   const loadNFTs = async () => {
     setIsLoading(true);
@@ -90,7 +99,7 @@ export default function Gallery() {
   }
 
   // Return UI with a conditional check
-  if (!isMetaMaskInstalled) {
+  if (!walletConnected) {
     return (
       <Flex
         direction="column"
@@ -99,31 +108,35 @@ export default function Gallery() {
         p={20}
       >
         <Text mb={4}>
-          To view and interact with this gallery, please connect a MetaMask
-          wallet.
+          {isMetaMaskInstalled
+            ? "Connect your MetaMask wallet to view the gallery."
+            : "MetaMask is required to view the gallery."}
         </Text>
-        <Button
-          as={Link}
-          href="https://metamask.io/download.html"
-          isExternal
-          mb={4}
-        >
-          Download MetaMask
+        <Button onClick={connectWallet}>
+          {isMetaMaskInstalled ? "Connect Wallet" : "Download MetaMask"}
         </Button>
-        <Text mb={4}>
-          Once MetaMask is installed, return to this page and refresh the
-          gallery.
-        </Text>
-        <Button onClick={refreshGallery}>Refresh Gallery</Button>
+        <IconButton
+          m={4}
+          icon={<FiRefreshCw />}
+          aria-label="Refresh Gallery"
+          size="sm" // Making the button smaller
+          onClick={refreshGallery}
+        />
       </Flex>
     );
   }
-
   return (
     <Box position="relative" p={20}>
-      <Button position="absolute" top={4} right={4} onClick={refreshGallery}>
-        Refresh Gallery
-      </Button>
+      <IconButton
+        icon={<FiRefreshCw />}
+        aria-label="Refresh Gallery"
+        position="absolute"
+        top={4}
+        left={4} // Changed from right to left
+        size="sm" // Making the button smaller
+        onClick={refreshGallery}
+      />
+
       <SimpleGrid columns={3} spacing={4}>
         {NFTs.map((nft, index) => (
           <NFTCard
