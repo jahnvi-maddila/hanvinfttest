@@ -20,6 +20,7 @@ import { useAmoy } from "../contexts/AmoyContext";
 const Minter = ({ isOpen, onClose }) => {
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
+  const [label, setLabel] = useState("");
   const { isMetaMaskInstalled, addPolygonAmoyNetwork, checkIsOnAmoyNetwork } =
     useAmoy();
 
@@ -94,7 +95,12 @@ const Minter = ({ isOpen, onClose }) => {
 
     try {
       const userAddress = await signer.getAddress();
-      const mintTx = await contract.mintNFT(userAddress, metadataURI, name);
+      const mintTx = await contract.mintNFT(
+        userAddress,
+        metadataURI,
+        name,
+        label
+      );
 
       await mintTx.wait();
       console.log("NFT minted! Transaction: ", mintTx.hash);
@@ -123,7 +129,7 @@ const Minter = ({ isOpen, onClose }) => {
                 {file ? (
                   <Text>{file.name}</Text>
                 ) : (
-                  <Text>
+                  <Text textColor={"black"}>
                     Drag &apos;n&apos; drop your file here, or click to select
                     files
                   </Text>
@@ -133,6 +139,12 @@ const Minter = ({ isOpen, onClose }) => {
                 placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                style={{ padding: "10px", margin: "10px 0", width: "100%" }}
+              />
+              <input
+                placeholder="Enter a label for the NFT"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
                 style={{ padding: "10px", margin: "10px 0", width: "100%" }}
               />
 

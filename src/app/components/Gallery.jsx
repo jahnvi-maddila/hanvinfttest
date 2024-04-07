@@ -24,16 +24,17 @@ export default function Gallery() {
         provider
       );
       const totalSupply = await contract.totalSupply(); // assuming a totalSupply function exists
-      console.log("Total Supply: ", totalSupply);
-      console.log("Total Supply: ", Number(totalSupply));
+
       let nfts = [];
       for (let i = 1; i <= Number(totalSupply); i++) {
         const tokenURI = await contract.tokenURI(i); // get token URI
         const tokenName = await contract.getTokenName(i); // get token name
+        const tokenLabel = await contract.getTokenLabel(i); // get token label
 
         nfts.push({
           src: tokenURI, // use the URI directly as the image source
           owner: tokenName,
+          label: tokenLabel,
         });
       }
 
@@ -60,6 +61,7 @@ export default function Gallery() {
           src={nft.src}
           index={index + 1}
           owner={nft.owner}
+          label={nft.label}
         />
       ))}
     </SimpleGrid>
