@@ -16,6 +16,7 @@ import Gallery from "./components/Gallery";
 import Minter from "./components/Minter";
 import AddNetwork from "./components/AddNetwork";
 import { AmoyProvider } from "./contexts/AmoyContext";
+import About from "./components/About";
 
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -44,6 +45,11 @@ export default function Home() {
           <Heading as="h1" size="2xl" marginBottom="8">
             The KU Blockchain Community Gallery
           </Heading>
+          <Box my={4}>
+            {" "}
+            {/* Add this Box */}
+            <About />
+          </Box>
           <Button
             colorScheme="blue"
             onClick={checkMetaMaskAndNetwork}
@@ -52,10 +58,7 @@ export default function Home() {
             Mint NFT
           </Button>
         </Box>
-        {/* <AddNetwork
-          isOpen={showAddNetworkModal}
-          onClose={() => setShowAddNetworkModal(false)}
-        /> */}
+
         <Gallery />
         <Minter isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
 
