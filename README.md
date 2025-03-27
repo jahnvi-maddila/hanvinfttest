@@ -18,4 +18,4 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Check out [the tutorial](https://kublockchain.notion.site/NFT-Gallery-dApp-tutorial-8ccbda66968b4b55b1808e8c2abe1272?pvs=4) for more specific instructions.
+Check out [the tutorial](https://kublockchain.notion.site/kubi-nft-gallery-tutorial) for more specific instructions.
