@@ -42,7 +42,7 @@ export default function Home() {
       <AmoyProvider>
         <Box textAlign="center" marginTop="4">
           <Heading as="h1" size="2xl" marginBottom="8">
-            Hanvi's Test Gallery
+            Hanvi Test Gallery
           </Heading>
           <Box my={4}>
             {" "}
