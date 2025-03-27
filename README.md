@@ -1,7 +1,7 @@
 # shared-nft-gallery
 
 This is starter code for a simple dApp for a shared NFT gallery.
-The development tutorial can be found on [our Notion](https://kublockchain.notion.site/NFT-Gallery-dApp-tutorial-8ccbda66968b4b55b1808e8c2abe1272?pvs=4) 
+The development tutorial can be found on [our Notion](https://kublockchain.notion.site/kubi-nft-gallery-tutorial) 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
